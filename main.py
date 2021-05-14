@@ -7,10 +7,11 @@
 # mail: kochetkov1985@mail.ru
 #
 
+from __future__ import absolute_import, division, print_function, unicode_literals
 from io import BytesIO
 import os
 
-import barcode
+import upcean
 import openpyxl
 import xlsxwriter
 from barcode import EAN13
@@ -36,21 +37,20 @@ def get_data_from_xls():
 
 barcode_file = 'barcode_all.xlsx'
 
-#xsl_data = get_data_from_xls()
-xsl_data = [[1, 10, 'Серьги-пуссеты, БК', 'БК', 'Ч4', 'ЗОЛОТО', 375, '19.0', 'С20ГМ0012А0-ЗЛ31-70', 4300127675, 'КРАСНЫЙ', 'БЕЗ ПОКРЫТИЯ', '2200001226579', 5990, 5500.46, 5990, 4580, None, None, 375, None, 4300127675, '2200001226579', '08.06.2021', None, None, None, None, '13.04.2021', '4300013233', None, 70, 1.089, 1.089, 76.23, 76.23, 0, 'RUB', 0, 158.33, 'Г', 1, 0, 4318.29, 62.7, 0, 0, 12069.5, 3, 1.089, 1.089, 76.23, 76.23, 45.928, None, 'ОВАЛ', 'БЕЗ АЛМ.ОГРАНКИ']]
-#print(xsl_data)
+xsl_data = get_data_from_xls()
+# xsl_data = [[1, 10, 'Серьги-пуссеты, БК', 'БК', 'Ч4', 'ЗОЛОТО', 375, '19.0', 'С20ГМ0012А0-ЗЛ31-70', 4300127675, 'КРАСНЫЙ', 'БЕЗ ПОКРЫТИЯ', '2200001226579', 5990, 5500.46, 5990, 4580, None, None, 375, None, 4300127675, '2200001226579', '08.06.2021', None, None, None, None, '13.04.2021', '4300013233', None, 70, 1.089, 1.089, 76.23, 76.23, 0, 'RUB', 0, 158.33, 'Г', 1, 0, 4318.29, 62.7, 0, 0, 12069.5, 3, 1.089, 1.089, 76.23, 76.23, 45.928, None, 'ОВАЛ', 'БЕЗ АЛМ.ОГРАНКИ']]
+# print(xsl_data)
 
 doc = xlsxwriter.Workbook(filename=barcode_file)
 
 for elem in xsl_data:
     doc_ws = doc.add_worksheet(str(elem[12]))
-    doc_ws.set_page_view()
-    doc_ws.set_column('A:J', 0.715)
-    doc_ws.set_default_row(7.20)
-    doc_ws.print_area('A1:J20')
+    doc_ws.set_column('A:J', 0.83)
+    doc_ws.set_default_row(8.25)
+    #doc_ws.print_area('A1:J20')
 
     # Наименование изделия
-    name_format = doc.add_format()
+    name_format = doc.add_format({'text_wrap': True})
     name_format.set_font_name('Times New Roman')
     name_format.set_font_size(6)
     name_format.set_align('center')
@@ -133,22 +133,127 @@ for elem in xsl_data:
 
     # Штрихкод
     image_data = BytesIO()
-    cod = barcode.get('upca', str(elem[12]))
-    ean = EAN13(str(elem[12]), writer=ImageWriter())
-    ean.write(image_data, options={"write_text": False})
+    #ean = EAN13(str(elem[12]), writer=ImageWriter())
+    #ean.write(image_data, options={"write_text": False})
 
-    image_width = 143.78
-    image_height = 79.01
+    barcode = upcean.oopfuncs.barcode('ean13', str(elem[12]))
+    filename = f'./barcodes/{str(elem[12])}.png'
+    print('CheckSum: '+str(barcode.validate_checksum()))
+    barcode.validate_create_barcode(filename, 1)
 
-    cell_width = 24.85
-    cell_height = 7.67
-
-    x_scale = cell_width / image_width
-    y_scale = cell_height / image_height
+    x_scale = 0.86  # *3.05
+    y_scale = 0.51  # *1.67
 
     doc_ws.insert_image(
         'A12',
-        f'{elem[12]}.png',
+        filename,
+        {
+            #'image_data': image_data,
+            'x_offset': 0,
+            'y_offset': 0,
+            'x_scale': x_scale,
+            'y_scale': y_scale,
+            'object_position': 0,
+        }
+    )
+
+    # Цена
+    cena_format = doc.add_format()
+    cena_format.set_font_name('Times New Roman')
+    cena_format.set_font_size(8)
+    cena_format.set_align('left')
+    cena_format.set_align('vcenter')
+    doc_ws.merge_range('A15:C15', 'Цена:', cena_format)
+
+    cena2_format = doc.add_format()
+    cena2_format.set_font_name('Times New Roman')
+    cena2_format.set_font_size(10)
+    cena2_format.set_align('center')
+    cena2_format.set_align('vcenter')
+    doc_ws.merge_range('D15:G15', elem[13], cena2_format)
+
+    cena3_format = doc.add_format()
+    cena3_format.set_font_name('Times New Roman')
+    cena3_format.set_font_size(8)
+    cena3_format.set_align('center')
+    cena3_format.set_align('vcenter')
+    doc_ws.merge_range('H15:J15', 'руб.', cena3_format)
+
+    # Цена за грамм
+    cena_format = doc.add_format()
+    cena_format.set_font_name('Times New Roman')
+    cena_format.set_font_size(5)
+    cena_format.set_align('right')
+    cena_format.set_align('vcenter')
+    doc_ws.merge_range('A16:C16', 'За гр.:', cena_format)
+
+    cena2_format = doc.add_format()
+    cena2_format.set_font_name('Times New Roman')
+    cena2_format.set_font_size(5)
+    cena2_format.set_align('center')
+    cena2_format.set_align('vcenter')
+    doc_ws.merge_range('D16:F16', elem[14], cena2_format)
+
+    cena3_format = doc.add_format()
+    cena3_format.set_font_name('Times New Roman')
+    cena3_format.set_font_size(5)
+    cena3_format.set_align('left')
+    cena3_format.set_align('vcenter')
+    doc_ws.merge_range('G16:I16', 'руб.', cena3_format)
+
+    # Размер
+    raz1_format = doc.add_format()
+    raz1_format.set_font_name('Times New Roman')
+    raz1_format.set_font_size(8)
+    raz1_format.set_align('center')
+    raz1_format.set_align('vcenter')
+    doc_ws.merge_range('A17:B17', elem[18], raz1_format)
+
+    # Цена прочерк
+    cena_format = doc.add_format()
+    cena_format.set_font_name('Times New Roman')
+    cena_format.set_font_size(7)
+    cena_format.set_font_strikeout()
+    cena_format.set_align('center')
+    cena_format.set_align('vcenter')
+    doc_ws.merge_range('G17:J17', f'{elem[15]}p', cena_format)
+
+    # Проба
+    proba_format = doc.add_format()
+    proba_format.set_font_name('Arial')
+    proba_format.set_font_size(7)
+    proba_format.set_align('center')
+    proba_format.set_align('vcenter')
+    doc_ws.merge_range('A18:B18', elem[19], proba_format)
+
+    # Цена продаж
+    cena_format = doc.add_format()
+    cena_format.set_font_name('Times New Roman')
+    cena_format.set_font_size(7)
+    cena_format.set_align('center')
+    cena_format.set_align('vcenter')
+    doc_ws.merge_range('G18:J18', f'{elem[16]}p', cena_format)
+
+    # Штрихкод
+    image_data = BytesIO()
+    ean = EAN13(str(elem[22]), writer=ImageWriter())
+    ean.write(image_data, options={"write_text": False, "includetext": True})
+
+    # image_width = 143.78
+    # image_height = 79.01
+    #
+    # cell_width = 24.85
+    # cell_height = 7.67
+    #
+    # x_scale = cell_width / image_width
+    # y_scale = cell_height / image_height
+
+    x_scale = 0.191  # *13.89
+    y_scale = 0.115  # *5.39
+
+    doc_ws.insert_image(
+        'A19',
+        f'{elem[22]}.png',
         {
             'image_data': image_data,
             'x_offset': 0,
@@ -158,5 +263,13 @@ for elem in xsl_data:
             'object_position': 0,
         }
     )
+
+    # САП код
+    sap_format = doc.add_format()
+    sap_format.set_font_name('Arial')
+    sap_format.set_font_size(8)
+    sap_format.set_align('center')
+    sap_format.set_align('vcenter')
+    doc_ws.merge_range('A21:J21', elem[9], sap_format)
 
 doc.close()
