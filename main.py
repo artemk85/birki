@@ -56,7 +56,7 @@ for elem in xsl_data:
     doc_ws.set_column(col_range, 0.415)
     doc_ws.set_default_row(5.25)
 
-    doc_ws.set_row_pixels(start_row, 24)
+    doc_ws.set_row_pixels(start_row, 26)
     doc_ws.set_row_pixels(start_row+1, 9)
     doc_ws.set_row_pixels(start_row+2, 11)
     doc_ws.set_row_pixels(start_row+9, 11)
