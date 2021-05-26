@@ -63,10 +63,10 @@ for elem in xsl_data:
     doc_ws.set_row_pixels(start_row+10, 13)
     doc_ws.set_row_pixels(start_row+11, 9)
     doc_ws.set_row_pixels(start_row+12, 10)
-    doc_ws.set_row_pixels(start_row+13, 14)
-    doc_ws.set_row_pixels(start_row+14, 14)
+    doc_ws.set_row_pixels(start_row+13, 15)
+    doc_ws.set_row_pixels(start_row+14, 15)
     doc_ws.set_row_pixels(start_row+15, 16)
-    doc_ws.set_row_pixels(start_row+16, 11)
+    doc_ws.set_row_pixels(start_row+16, 14)
 
     doc_ws.print_area('B1:S24')
 
@@ -312,7 +312,8 @@ for elem in xsl_data:
     y_scale = 0.076  # *5.39
 
     doc_ws.insert_image(
-        f'A{start_row+15}',
+        start_row+15,
+        0,
         f'{elem[22]}.png',
         {
             'image_data': image_data2,
