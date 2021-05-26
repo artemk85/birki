@@ -18,7 +18,7 @@ from barcode import EAN13
 from barcode.writer import ImageWriter
 
 
-start_row = 7  # В экселе +1
+start_row = 6  # В экселе +1
 start_col = 1  # 'C'
 end_col = 18   # 'T'
 col_range = 'B:S'
@@ -56,19 +56,19 @@ for elem in xsl_data:
     doc_ws.set_column(col_range, 0.415)
     doc_ws.set_default_row(5.25)
 
-    doc_ws.set_row_pixels(start_row, 25)
+    doc_ws.set_row_pixels(start_row, 24)
     doc_ws.set_row_pixels(start_row+1, 9)
     doc_ws.set_row_pixels(start_row+2, 11)
     doc_ws.set_row_pixels(start_row+9, 11)
     doc_ws.set_row_pixels(start_row+10, 13)
     doc_ws.set_row_pixels(start_row+11, 9)
-    doc_ws.set_row_pixels(start_row+12, 10)
+    doc_ws.set_row_pixels(start_row+12, 8)
     doc_ws.set_row_pixels(start_row+13, 15)
     doc_ws.set_row_pixels(start_row+14, 15)
     doc_ws.set_row_pixels(start_row+15, 16)
     doc_ws.set_row_pixels(start_row+16, 14)
 
-    doc_ws.print_area('B1:S24')
+    doc_ws.print_area('B1:S23')
 
     # Наименование изделия
     name_format = doc.add_format(
