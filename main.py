@@ -75,7 +75,7 @@ for elem in xsl_data:
         {
             'text_wrap': True,
             'font_name': 'Times New Roman',
-            'font_size': 6,
+            'font_size': 7,
             'text_h_align': 2,
             'text_v_align': 2,
         }
