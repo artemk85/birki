@@ -16,14 +16,15 @@ import openpyxl
 import xlsxwriter
 from barcode import EAN13
 from barcode.writer import ImageWriter
+import constant
 
 
-start_row = 6  # В экселе +1
-start_col = 1  # 'C'
-end_col = 18   # 'T'
-col_range = 'B:S'
-start_row_read = 16
-end_row_read = 35
+start_row = constant.START_ROW  # В экселе +1
+start_col = constant.START_COL  # 'C'
+end_col = constant.END_COL   # 'T'
+col_range = constant.COL_RANGE
+start_row_read = constant.START_ROW_READ
+end_row_read = constant.END_ROW_READ
 # col A - BE или 1 - 58
 
 
