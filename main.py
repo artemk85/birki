@@ -47,7 +47,7 @@ def get_data_from_xls(fn: str):
     return data
 
 if __name__ == "__main__":
-    all_file = 'all.xlsx'
+    all_file = 'all_data.xlsx'
     barcode_file = f'barcode_all_{datetime.datetime.date(datetime.datetime.now())}.xlsx'
 
     xsl_data = get_data_from_xls(all_file)
