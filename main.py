@@ -58,23 +58,38 @@ if __name__ == "__main__":
 
     for elem in xsl_data:
         doc_ws = doc.add_worksheet(str(elem[12]))
+        doc_ws.set_zoom(235)
         doc_ws.set_column('A:A', 0.83)
         doc_ws.set_column(col_range, 0.415)
         doc_ws.set_default_row(5.25)
 
-        doc_ws.set_row_pixels(start_row, 26)
-        doc_ws.set_row_pixels(start_row+1, 9)
-        doc_ws.set_row_pixels(start_row+2, 11)
-        doc_ws.set_row_pixels(start_row+9, 11)
-        doc_ws.set_row_pixels(start_row+10, 13)
-        doc_ws.set_row_pixels(start_row+11, 9)
-        doc_ws.set_row_pixels(start_row+12, 8)
-        doc_ws.set_row_pixels(start_row+13, 15)
-        doc_ws.set_row_pixels(start_row+14, 15)
-        doc_ws.set_row_pixels(start_row+15, 16)
-        doc_ws.set_row_pixels(start_row+16, 14)
+        doc_ws.set_row_pixels(start_row - 2, 4)
+        doc_ws.set_row_pixels(start_row - 1, 4)
+        doc_ws.set_row_pixels(start_row, 7)
+        doc_ws.set_row_pixels(start_row + 1, 26)
+        doc_ws.set_row_pixels(start_row + 2, 9)
+        doc_ws.set_row_pixels(start_row + 3, 11)
+        doc_ws.set_row_pixels(start_row + 10, 11)
+        doc_ws.set_row_pixels(start_row + 11, 13)
+        doc_ws.set_row_pixels(start_row + 12, 9)
+        doc_ws.set_row_pixels(start_row + 13, 10)
+        doc_ws.set_row_pixels(start_row + 14, 15)
+        doc_ws.set_row_pixels(start_row + 15, 15)
+        doc_ws.set_row_pixels(start_row + 16, 5)
+        doc_ws.set_row_pixels(start_row + 17, 15)
+        doc_ws.set_row_pixels(start_row + 18, 12)
 
-        doc_ws.print_area('B1:S23')
+        doc_ws.print_area('B1:S24')
+
+        # Название ООО "ОРО"
+        type_met_format = doc.add_format({
+                'font_name': 'Times New Roman',
+                'font_size': 5,
+                'text_h_align': 2,
+                'text_v_align': 2,
+            }
+        )
+        doc_ws.merge_range(start_row, start_col, start_row, start_col + 17, 'ООО "ОРО"', type_met_format)  # 'B6:H6'
 
         # Наименование изделия
         name_format = doc.add_format(
@@ -86,7 +101,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row, start_col, start_row, start_col+17, elem[2], name_format)
+        doc_ws.merge_range(start_row+1, start_col, start_row+1, start_col+17, elem[2], name_format)
 
         # Название товарного направления
         ntn_format = doc.add_format({
@@ -96,7 +111,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+1, start_col, start_row+1, start_col+10, elem[3], ntn_format)
+        doc_ws.merge_range(start_row+2, start_col, start_row+2, start_col+11, elem[3], ntn_format)
 
         # Коллекция
         koll_format = doc.add_format({
@@ -106,7 +121,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+1, start_col+14, start_row+1, start_col+17, elem[4], koll_format)  # 'P13:S13'
+        doc_ws.merge_range(start_row+2, start_col+14, start_row+2, start_col+17, elem[4], koll_format)  # 'P13:S13'
 
         # Тип металла
         type_met_format = doc.add_format({
@@ -116,7 +131,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+2, start_col, start_row+2, start_col+6, elem[5], type_met_format)  # 'B14:H14'
+        doc_ws.merge_range(start_row + 3, start_col, start_row + 3, start_col+6, elem[5], type_met_format)  # 'B14:H14'
 
         # Проба
         proba_format = doc.add_format({
@@ -126,7 +141,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+2, start_col+7, start_row+2, start_col+10, elem[6], proba_format)  # 'I14:L14'
+        doc_ws.merge_range(start_row+3, start_col+7, start_row+3, start_col+10, elem[6], proba_format)  # 'I14:L14'
 
         # Размер
         raz_format = doc.add_format({
@@ -136,7 +151,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+2, start_col+11, start_row+2, start_col+13, 'Р-р', raz_format)
+        doc_ws.merge_range(start_row+3, start_col+11, start_row+3, start_col+13, 'Р-р', raz_format)
 
         raz1_format = doc.add_format({
                 'font_name': 'Times New Roman',
@@ -145,7 +160,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+2, start_col+14, start_row+2, start_col+17, elem[7], raz1_format)
+        doc_ws.merge_range(start_row+3, start_col+14, start_row+3, start_col+17, elem[7], raz1_format)
 
         # Артикул
         art_format = doc.add_format({
@@ -155,7 +170,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+3, start_col, start_row+3, start_col+17, f'Арт {elem[8]}', art_format)
+        doc_ws.merge_range(start_row+4, start_col, start_row+4, start_col+17, f'Арт {elem[8]}', art_format)
 
         # САП код
         sap_format = doc.add_format({
@@ -165,7 +180,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+4, start_col, start_row+4, start_col+17, f'САП код: {elem[9]}', sap_format)
+        doc_ws.merge_range(start_row+5, start_col, start_row+5, start_col+17, f'САП код: {elem[9]}', sap_format)
 
         # Цвет металла
         cvet_format = doc.add_format({
@@ -175,7 +190,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+5, start_col, start_row+5, start_col+17, f'Цв. {elem[10]}', cvet_format)
+        doc_ws.merge_range(start_row+6, start_col, start_row+6, start_col+17, f'Цв. {elem[10]}', cvet_format)
 
         # Покрытие
 
@@ -189,7 +204,7 @@ if __name__ == "__main__":
         y_scale = 0.115  # *5.39
 
         doc_ws.insert_image(
-            f'A{start_row+7}',
+            f'A{start_row+8}',
             str(elem[12]),
             {
                 'image_data': image_data,
@@ -208,7 +223,7 @@ if __name__ == "__main__":
                 'text_v_align': 1,  # top
             }
         )
-        doc_ws.merge_range(start_row+9, start_col, start_row+9, start_col+17, str(elem[12]), bc)
+        doc_ws.merge_range(start_row+10, start_col, start_row+10, start_col+17, str(elem[12]), bc)
 
         # Цена
         cena_format = doc.add_format({
@@ -218,7 +233,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+10, start_col, start_row+10, start_col+4, 'Цена:', cena_format)
+        doc_ws.merge_range(start_row+11, start_col, start_row+11, start_col+4, 'Цена:', cena_format)
 
         cena2_format = doc.add_format({
                 'bold': True,
@@ -228,7 +243,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+10, start_col+5, start_row+10, start_col+13, elem[13], cena2_format)
+        doc_ws.merge_range(start_row+11, start_col+5, start_row+11, start_col+13, elem[13], cena2_format)
 
         cena3_format = doc.add_format({
                 'font_name': 'Times New Roman',
@@ -237,7 +252,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+10, start_col+14, start_row+10, start_col+17, 'руб.', cena3_format)
+        doc_ws.merge_range(start_row+11, start_col+14, start_row+11, start_col+17, 'руб.', cena3_format)
 
         # Цена за грамм
         cena_format = doc.add_format({
@@ -247,7 +262,7 @@ if __name__ == "__main__":
                 'text_v_align': 1,
             }
         )
-        doc_ws.merge_range(start_row+11, start_col, start_row+11, start_col+4, 'За гр.:', cena_format)
+        doc_ws.merge_range(start_row+12, start_col, start_row+12, start_col+4, 'За гр.:', cena_format)
 
         cena2_format = doc.add_format({
                 'font_name': 'Times New Roman',
@@ -256,7 +271,7 @@ if __name__ == "__main__":
                 'text_v_align': 1,
             }
         )
-        doc_ws.merge_range(start_row+11, start_col+5, start_row+11, start_col+13, elem[14], cena2_format)
+        doc_ws.merge_range(start_row+12, start_col+5, start_row+12, start_col+13, elem[14], cena2_format)
 
         cena3_format = doc.add_format({
                 'font_name': 'Times New Roman',
@@ -265,7 +280,7 @@ if __name__ == "__main__":
                 'text_v_align': 1,
             }
         )
-        doc_ws.merge_range(start_row+11, start_col+14, start_row+11, start_col+17, 'руб.', cena3_format)
+        doc_ws.merge_range(start_row+12, start_col+14, start_row+12, start_col+17, 'руб.', cena3_format)
 
         # Размер
         raz1_format = doc.add_format({
@@ -275,7 +290,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+13, start_col, start_row+13, start_col+4, elem[18], raz1_format)
+        doc_ws.merge_range(start_row+14, start_col, start_row+14, start_col+4, elem[18], raz1_format)
 
         # Цена прочерк
         cena_format = doc.add_format({
@@ -286,7 +301,7 @@ if __name__ == "__main__":
                 'font_strikeout': 1,
             }
         )
-        doc_ws.merge_range(start_row+13, start_col+10, start_row+13, start_col+17, f'{elem[15]}p', cena_format)
+        doc_ws.merge_range(start_row+14, start_col+10, start_row+14, start_col+17, f'{elem[15]}p', cena_format)
 
         # Проба
         if elem[19] == 375:
@@ -297,7 +312,7 @@ if __name__ == "__main__":
                     'text_v_align': 2,
                 }
             )
-            doc_ws.merge_range(start_row+14, start_col, start_row+14, start_col+4, elem[19], proba_format)  # 'B25:F25'
+            doc_ws.merge_range(start_row+15, start_col, start_row+15, start_col+4, elem[19], proba_format)  # 'B25:F25'
 
         # Цена продаж
         cena_format = doc.add_format({
@@ -307,7 +322,7 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+14, start_col+10, start_row+14, start_col+17, f'{elem[16]}p', cena_format)
+        doc_ws.merge_range(start_row+15, start_col+10, start_row+15, start_col+17, f'{elem[16]}p', cena_format)
 
         # Штрихкод
         image_data2 = BytesIO()
@@ -318,7 +333,7 @@ if __name__ == "__main__":
         y_scale = 0.076  # *5.39
 
         doc_ws.insert_image(
-            start_row+15,
+            start_row+17,
             0,
             f'{elem[22]}.png',
             {
@@ -339,8 +354,6 @@ if __name__ == "__main__":
                 'text_v_align': 2,
             }
         )
-        doc_ws.merge_range(start_row+16, start_col, start_row+16, start_col+17, elem[9], sap_format)
+        doc_ws.merge_range(start_row+18, start_col, start_row+18, start_col+17, elem[9], sap_format)
 
     doc.close()
-
-
